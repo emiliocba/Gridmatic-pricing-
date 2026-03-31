@@ -201,6 +201,7 @@ input[type=range]::-webkit-slider-thumb {
 .r-lbl { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 8px; }
 .r-num { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; color: #fff; margin-bottom: 3px; }
 .r-num.g { color: var(--lime); }
+.r-num.b { color: rgba(110,155,255,0.9); }
 .r-note { font-size: 10px; color: rgba(255,255,255,0.25); }
 
 /* Table */
@@ -208,28 +209,27 @@ input[type=range]::-webkit-slider-thumb {
 .sec-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.45); margin-bottom: 12px; padding-left: 4px; }
 .tbl-card { overflow: hidden; }
 .tbl-head {
-  display: grid; grid-template-columns: 1.2fr 1fr 1fr;
+  display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr;
   padding: 12px 20px;
-  background: rgba(255,255,255,0.03);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
-.th { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.25); }
+.th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.5); }
 .th:not(:first-child) { text-align: right; }
 .tbl-row {
-  display: grid; grid-template-columns: 1.2fr 1fr 1fr;
-  padding: 13px 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
   transition: background 0.12s;
 }
 .tbl-row:last-child { border-bottom: none; }
 .tbl-row:hover { background: rgba(255,255,255,0.03); }
-.tbl-row.dim .tc1, .tbl-row.dim .tc2 { color: rgba(255,255,255,0.3); }
-.tbl-row.dim .tc3 { color: rgba(200,255,0,0.25); }
 .tbl-row.on { background: rgba(200,255,0,0.07); }
 .tbl-row.on .tc1 { color: var(--lime); font-weight: 600; }
-.tc1 { font-size: 14px; color: rgba(255,255,255,0.75); }
-.tc2 { font-size: 14px; font-weight: 600; text-align: right; }
-.tc3 { font-size: 14px; color: rgba(200,255,0,0.65); text-align: right; }
+.tc1 { font-size: 14px; color: rgba(255,255,255,0.85); }
+.tc2 { font-size: 14px; font-weight: 700; text-align: right; color: #fff; }
+.tc3 { font-size: 14px; color: rgba(200,255,0,0.75); text-align: right; }
+.tc4 { font-size: 14px; color: rgba(200,255,0,1); font-weight: 600; text-align: right; }
 .tag {
   display: inline-block; 
   font-size: 9px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle;
@@ -602,21 +602,16 @@ input[type=range]::-webkit-slider-thumb {
       <div class="step-arrow" id="sarr3">▼</div>
     </div>
     <div class="step-body closed" id="sbody3">
-      <div class="results" style="grid-template-columns: 1fr 1fr 1fr; margin-bottom:14px;">
+      <div class="results" style="grid-template-columns: 1fr 1fr; margin-bottom:14px;">
         <div class="r-box r-box-hi">
-          <div class="r-lbl">Est. monthly profit</div>
-          <div class="r-num g" id="rProfit">$5,250</div>
-          <div class="r-note" id="rRatio">at 7% return</div>
+          <div class="r-lbl">Monthly cash flow</div>
+          <div class="r-num g" id="rProfit">$2,625</div>
+          <div class="r-note" id="rRatio">yours to withdraw</div>
         </div>
         <div class="r-box r-box-std">
-          <div class="r-lbl">After fee · you keep</div>
-          <div class="r-num g" id="rNet">$4,800</div>
-          <div class="r-note">per month</div>
-        </div>
-        <div class="r-box r-box-std">
-          <div class="r-lbl">Monthly fee</div>
-          <div class="r-num" id="rFee">$450</div>
-          <div class="r-note" id="rAnn">$5,400 / yr</div>
+          <div class="r-lbl">Monthly reinvested</div>
+          <div class="r-num b" id="rReinvest">$2,625</div>
+          <div class="r-note">added back to your bot</div>
         </div>
       </div>
       <div class="sec-label">Cash flow vs reinvestment</div>
@@ -746,6 +741,7 @@ input[type=range]::-webkit-slider-thumb {
             <div class="th">Capital</div>
             <div class="th">Subscription</div>
             <div class="th" id="profitHdr">Est. Profit (7%)</div>
+            <div class="th">Net Profit</div>
           </div>
           <div id="rows"></div>
         </div>
@@ -852,11 +848,12 @@ function render(cap) {
   document.getElementById('capAmt').textContent = cap.toLocaleString();
   const sf = fee(cap), lf = Math.max(199, cap*0.005);
   const pr = cap * retRate;
-  document.getElementById('rFee').textContent = fmt(sf)+'/mo';
-  document.getElementById('rAnn').textContent = fmt(sf*12)+' / yr';
-  document.getElementById('rProfit').textContent = fmt(pr);
-  document.getElementById('rRatio').textContent = pct(sf/pr*100)+' of profit';
-  document.getElementById('rNet').textContent = fmt(pr - sf)+'/mo';
+  document.getElementById('rProfit').textContent = fmt(pr * cfPct);
+  document.getElementById('rRatio').textContent = 'yours to withdraw';
+  document.getElementById('rReinvest') && (document.getElementById('rReinvest').textContent = fmt(pr * (1 - cfPct)));
+  document.getElementById('rFee') && (document.getElementById('rFee').textContent = fmt(sf)+'/mo');
+  document.getElementById('rAnn') && (document.getElementById('rAnn').textContent = fmt(sf*12)+' / yr');
+  document.getElementById('rNet') && (document.getElementById('rNet').textContent = fmt(pr - sf)+'/mo');
   document.getElementById('s4Capital') && (document.getElementById('s4Capital').textContent = fmt(cap));
   document.getElementById('s4Fee') && (document.getElementById('s4Fee').textContent = fmt(sf)+'/mo');
   document.getElementById('profitHdr').textContent = 'Est. Profit ('+pct(retRate*100)+')';
@@ -867,9 +864,10 @@ function render(cap) {
     const clientFee = fee(cap);
     const active = f === clientFee;
     const profit = c * retRate;
+    const net = profit - f;
     const div = document.createElement('div');
     div.className = 'tbl-row' + (active ? ' on' : '');
-    div.innerHTML = `<div class="tc1">${label}</div><div class="tc2">${fmt(f)}/mo</div><div class="tc3">${fmt(profit)}</div>`;
+    div.innerHTML = `<div class="tc1">${label}</div><div class="tc2">${fmt(f)}/mo</div><div class="tc3">${fmt(profit)}</div><div class="tc4">${fmt(net)}</div>`;
     cont.appendChild(div);
   });
   setSliderPct('sl', cap, 1000, 2000000);
@@ -941,6 +939,11 @@ function renderCF() {
   const cap = Math.max(1000, parseInt(String(document.getElementById('capIn').value).replace(/,/g,'')) || 75000);
   const cfD = Math.round(cfPct * 100);
   const riD = 100 - cfD;
+  const pr = cap * retRate;
+
+  // Update outcome boxes in Step 3
+  document.getElementById('rProfit') && (document.getElementById('rProfit').textContent = fmt(pr * cfPct));
+  document.getElementById('rReinvest') && (document.getElementById('rReinvest').textContent = fmt(pr * (1 - cfPct)));
 
   document.getElementById('cfVal') && (document.getElementById('cfVal').textContent = cfD + '%');
   const riEl = document.getElementById('cfVsRi');
