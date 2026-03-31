@@ -712,6 +712,23 @@ input[type=range]::-webkit-slider-thumb {
       <div class="step-arrow" id="sarr4">▼</div>
     </div>
     <div class="step-body closed" id="sbody4">
+
+      <!-- Personalized cost summary -->
+      <div class="gc" style="padding: 22px 24px; margin-bottom: 14px;">
+        <div style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:rgba(255,255,255,0.35); margin-bottom:16px;">Your subscription</div>
+        <div style="display:grid; grid-template-columns:1fr 1px 1fr; gap:0; margin-bottom:0;">
+          <div style="text-align:center; padding: 0 12px;">
+            <div style="font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:6px;">Your capital</div>
+            <div style="font-size:24px; font-weight:700; letter-spacing:-0.03em; color:#fff;" id="s4Capital">$75,000</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);"></div>
+          <div style="text-align:center; padding: 0 12px;">
+            <div style="font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:6px;">Monthly subscription</div>
+            <div style="font-size:24px; font-weight:700; letter-spacing:-0.03em; color:var(--lime);" id="s4Fee">$450/mo</div>
+          </div>
+        </div>
+      </div>
+
       <button class="formula-btn pill" id="fBtn" onclick="toggleFormula()">
         <span id="fBtnTxt">How is pricing calculated?</span>
         <span class="arr">▼</span>
@@ -838,6 +855,9 @@ function render(cap) {
   document.getElementById('rProfit').textContent = fmt(pr);
   document.getElementById('rRatio').textContent = pct(sf/pr*100)+' of profit';
   document.getElementById('rNet').textContent = fmt(pr - sf)+'/mo';
+  document.getElementById('s4Capital') && (document.getElementById('s4Capital').textContent = fmt(cap));
+  document.getElementById('s4Fee') && (document.getElementById('s4Fee').textContent = fmt(sf)+'/mo');
+  document.getElementById('s4Annual') && (document.getElementById('s4Annual').textContent = fmt(sf*12)+'/yr');
   document.getElementById('profitHdr').textContent = 'Est. Profit ('+pct(retRate*100)+')';
   const cont = document.getElementById('rows');
   cont.innerHTML = '';
