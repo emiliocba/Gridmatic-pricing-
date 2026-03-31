@@ -729,7 +729,7 @@ input[type=range]::-webkit-slider-thumb {
         </div>
       </div>
 
-      <button class="formula-btn pill" id="fBtn" onclick="toggleFormula()">
+      <button class="formula-btn pill" id="fBtn" onclick="toggleFormula()" style="display:none;">
         <span id="fBtnTxt">How is pricing calculated?</span>
         <span class="arr">▼</span>
       </button>
@@ -749,7 +749,7 @@ input[type=range]::-webkit-slider-thumb {
           </div>
           <div id="rows"></div>
         </div>
-        <div class="tbl-note">$199/mo minimum applies below ~$33k · 0.6% of capital above $33k</div>
+        <div class="tbl-note">$199/mo minimum · Fixed monthly subscription based on your capital tier</div>
       </div>
       <div class="sec-label" style="margin-top:6px;">Loyalty reward</div>
       <div class="gc-lime loy-card">
@@ -832,12 +832,34 @@ function setGoal(goal) {
   renderCF();
 }
 
-const fee = c => Math.max(199, c * 0.006);
+const tiers = [
+  { max: 25000,    fee: 199 },
+  { max: 50000,    fee: 299 },
+  { max: 75000,    fee: 399 },
+  { max: 100000,   fee: 499 },
+  { max: 150000,   fee: 649 },
+  { max: 200000,   fee: 849 },
+  { max: 300000,   fee: 1099 },
+  { max: Infinity, fee: 1499 },
+];
+const fee = c => { for (const t of tiers) { if (c <= t.max) return t.fee; } return 1499; };
 const fmt = n => '$' + Math.round(n).toLocaleString();
 const pct = n => n.toFixed(1) + '%';
-const lbl = c => c === 33300 ? '~$33k' : '$' + (c/1000).toLocaleString() + 'k';
+const lbl = c => {
+  const t = rows.find(r => r.c === c);
+  return t ? t.label : '$' + (c/1000).toLocaleString() + 'k';
+};
 
-const rows = [{c:25000},{c:33300},{c:50000},{c:75000},{c:100000},{c:150000},{c:200000},{c:300000}];
+const rows = [
+  { c: 25000,  label: 'Up to $25k' },
+  { c: 50000,  label: '$25k – $50k' },
+  { c: 75000,  label: '$50k – $75k' },
+  { c: 100000, label: '$75k – $100k' },
+  { c: 150000, label: '$100k – $150k' },
+  { c: 200000, label: '$150k – $200k' },
+  { c: 300000, label: '$200k – $300k' },
+  { c: 500000, label: '$300k+' },
+];
 let retRate = 0.07;
 
 function setSliderPct(id, val, min, max) {
@@ -861,15 +883,14 @@ function render(cap) {
   document.getElementById('profitHdr').textContent = 'Est. Profit ('+pct(retRate*100)+')';
   const cont = document.getElementById('rows');
   cont.innerHTML = '';
-  rows.forEach(({c}) => {
-    const f = fee(c), isFloor = f===199, isBreak = c===33300;
-    const active = Math.abs(c-cap) < 14000;
+  rows.forEach(({c, label}) => {
+    const f = fee(c);
+    const clientFee = fee(cap);
+    const active = f === clientFee;
     const profit = c * retRate;
-    const badge = isBreak ? '<span class="tag tf">breakeven</span>' :
-      isFloor ? '<span class="tag tf">floor</span>' : '<span class="tag tr">0.6%</span>';
     const div = document.createElement('div');
-    div.className = 'tbl-row' + (active?' on':isFloor?' dim':'');
-    div.innerHTML = `<div class="tc1">${lbl(c)}${badge}</div><div class="tc2">${fmt(f)}/mo</div><div class="tc3">${fmt(profit)}</div>`;
+    div.className = 'tbl-row' + (active ? ' on' : '');
+    div.innerHTML = `<div class="tc1">${label}</div><div class="tc2">${fmt(f)}/mo</div><div class="tc3">${fmt(profit)}</div>`;
     cont.appendChild(div);
   });
   setSliderPct('sl', cap, 1000, 2000000);
