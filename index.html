@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gridmatic Pricing</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --lime: #C8FF00;
+  --lime-bg: rgba(200,255,0,0.07);
+  --lime-border: rgba(200,255,0,0.18);
+  --bg: #080808;
+  --panel: #111;
+  --border: rgba(255,255,255,0.07);
+  --muted: rgba(255,255,255,0.4);
+  --faint: rgba(255,255,255,0.15);
+}
+body {
+  background: var(--bg);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 60px 24px 80px;
+}
+.wrap { width: 100%; max-width: 600px; }
+
+/* Logo */
+.logo { font-size: 13px; font-weight: 500; color: var(--muted); letter-spacing: 0.01em; margin-bottom: 52px; }
+.logo b { color: #fff; }
+
+/* Title */
+.title { font-size: 34px; font-weight: 300; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 12px; }
+.title b { font-weight: 600; color: var(--lime); }
+.subtitle { font-size: 14px; color: var(--muted); line-height: 1.65; max-width: 460px; margin-bottom: 36px; }
+
+/* Formula */
+.formula {
+  display: flex; align-items: center; gap: 12px;
+  border: 1px solid var(--lime-border);
+  border-radius: 8px;
+  padding: 12px 18px;
+  background: var(--panel);
+  margin-bottom: 36px;
+  width: fit-content;
+}
+.f-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.f-divider { width: 1px; height: 14px; background: var(--border); }
+.f-code { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--lime); font-weight: 500; }
+
+/* Slider */
+.slider-wrap { margin-bottom: 28px; }
+.slider-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.slider-top label { font-size: 13px; color: var(--muted); }
+.slider-top strong { font-family: 'DM Mono', monospace; font-size: 14px; color: #fff; font-weight: 500; }
+input[type=range] {
+  -webkit-appearance: none; width: 100%;
+  height: 2px; background: rgba(255,255,255,0.1);
+  border-radius: 2px; outline: none; cursor: pointer; display: block;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 16px; height: 16px;
+  background: var(--lime); border-radius: 50%; cursor: pointer;
+}
+
+/* Results */
+.results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 16px; margin-bottom: 32px; }
+.r-box { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.r-box.hi { border-color: var(--lime-border); background: var(--lime-bg); }
+.r-lbl { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+.r-num { font-size: 19px; font-weight: 600; letter-spacing: -0.02em; }
+.r-num.g { color: var(--lime); }
+.r-note { font-size: 10px; color: var(--faint); margin-top: 3px; font-family: 'DM Mono', monospace; }
+
+/* Table */
+.tbl-head { display: grid; grid-template-columns: 1.1fr 1fr 1fr; padding: 0 10px 9px; border-bottom: 1px solid var(--border); }
+.tbl-head span { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: rgba(255,255,255,0.22); }
+.tbl-head span:last-child { text-align: right; }
+.tbl-rows { margin-bottom: 32px; }
+.row {
+  display: grid; grid-template-columns: 1.1fr 1fr 1fr;
+  padding: 12px 10px; border-bottom: 1px solid var(--border);
+  border-radius: 6px; margin: 0 -10px;
+}
+.row:hover { background: rgba(255,255,255,0.025); }
+.row.dim .c1, .row.dim .c2 { color: rgba(255,255,255,0.3); }
+.row.dim .c3 { color: rgba(200,255,0,0.25); }
+.row.on { background: var(--lime-bg); border-color: transparent; outline: 1px solid var(--lime-border); outline-offset: -1px; }
+.row.on .c1 { color: var(--lime); font-weight: 500; }
+.c1 { font-size: 14px; color: rgba(255,255,255,0.7); }
+.c2 { font-size: 14px; font-weight: 500; }
+.c3 { font-size: 14px; color: rgba(200,255,0,0.6); text-align: right; }
+.tag {
+  display: inline-block; font-family: 'DM Mono', monospace;
+  font-size: 9px; padding: 1px 5px; border-radius: 3px;
+  margin-left: 6px; vertical-align: middle;
+}
+.tag-f { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.28); }
+.tag-r { background: rgba(200,255,0,0.1); color: var(--lime); }
+
+/* Loyalty */
+.loyalty {
+  background: var(--panel); border: 1px solid var(--lime-border);
+  border-radius: 12px; padding: 22px 24px; margin-bottom: 32px;
+}
+.loy-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+.loy-title { font-size: 15px; font-weight: 600; }
+.loy-tag { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--lime); background: rgba(200,255,0,0.1); padding: 4px 10px; border-radius: 20px; }
+.loy-body { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 22px; }
+.track { display: flex; align-items: center; }
+.step { text-align: center; }
+.dot {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 6px; font-size: 11px; font-weight: 600;
+}
+.dot.a { background: var(--lime); color: #000; }
+.dot.b { background: rgba(200,255,0,0.1); border: 1px solid var(--lime-border); color: var(--lime); }
+.step-month { font-size: 10px; font-family: 'DM Mono', monospace; color: rgba(255,255,255,0.25); margin-bottom: 2px; }
+.step-rate { font-size: 13px; font-weight: 600; }
+.step-rate.g { color: var(--lime); }
+.line { flex: 1; height: 1px; background: var(--border); margin: 0 16px 22px; position: relative; }
+.line::after {
+  content: '12 months';
+  position: absolute; top: -7px; left: 50%; transform: translateX(-50%);
+  font-size: 9px; font-family: 'DM Mono', monospace; color: rgba(255,255,255,0.18);
+  background: var(--panel); padding: 0 6px; white-space: nowrap;
+}
+
+/* Footer */
+.footer { border-top: 1px solid var(--border); padding-top: 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.footer-note { font-size: 11px; color: rgba(255,255,255,0.18); line-height: 1.6; }
+.footer-logo { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.12); }
+.footer-logo b { color: rgba(200,255,0,0.25); }
+
+@media(max-width:500px){
+  .results { grid-template-columns: 1fr 1fr; }
+  .results .r-box:last-child { grid-column: span 2; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="logo"><b>Gridmatic</b> · Pricing</div>
+
+  <h1 class="title">Pay for what<br>you <b>deploy.</b></h1>
+  <p class="subtitle">One formula. No tiers, no cliffs. Your fee scales with your capital — and drops automatically after 12 months.</p>
+
+  <div class="formula">
+    <span class="f-label">Formula</span>
+    <div class="f-divider"></div>
+    <span class="f-code">max( $199, capital × 0.60% ) / mo</span>
+  </div>
+
+  <div class="slider-wrap">
+    <div class="slider-top">
+      <label>Your capital</label>
+      <strong id="capDisplay">$75,000</strong>
+    </div>
+    <input type="range" id="sl" min="25000" max="300000" step="1000" value="75000">
+  </div>
+
+  <div class="results">
+    <div class="r-box">
+      <div class="r-lbl">Monthly fee</div>
+      <div class="r-num" id="rFee">$450</div>
+      <div class="r-note" id="rAnn">$5,400 / yr</div>
+    </div>
+    <div class="r-box hi">
+      <div class="r-lbl">Est. monthly profit</div>
+      <div class="r-num g" id="rProfit">$5,250</div>
+      <div class="r-note" id="rRatio">8.6% of profit</div>
+    </div>
+    <div class="r-box">
+      <div class="r-lbl">After 12 months</div>
+      <div class="r-num g" id="rLoyal">$375</div>
+      <div class="r-note" id="rSave">Save $75/mo</div>
+    </div>
+  </div>
+
+  <div class="tbl-head">
+    <span>Capital</span><span>Monthly fee</span><span style="text-align:right">Est. profit (7%)</span>
+  </div>
+  <div class="tbl-rows" id="rows"></div>
+
+  <div class="loyalty">
+    <div class="loy-top">
+      <div class="loy-title">The 12-Month Rate</div>
+      <div class="loy-tag">Loyalty reward</div>
+    </div>
+    <div class="loy-body">Stay 12 months and your rate permanently drops from 0.6% to 0.5%. Your reward for letting the bot compound and grow.</div>
+    <div class="track">
+      <div class="step">
+        <div class="dot a">1</div>
+        <div class="step-month">Day one</div>
+        <div class="step-rate">0.6%/mo</div>
+      </div>
+      <div class="line"></div>
+      <div class="step">
+        <div class="dot b">✓</div>
+        <div class="step-month">Month 12+</div>
+        <div class="step-rate g">0.5%/mo</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-note">$199 minimum floor · $25,000 minimum capital<br>No performance fees · No setup fees · Cancel anytime</div>
+    <div class="footer-logo">Grid<b>matic</b></div>
+  </div>
+
+</div>
+<script>
+const data = [
+  {c:25000},{c:33300},{c:50000},{c:75000},
+  {c:100000},{c:150000},{c:200000},{c:300000}
+];
+const fmt = n => '$' + Math.round(n).toLocaleString();
+const pct = n => n.toFixed(1) + '%';
+const lbl = c => c === 33300 ? '~$33k' : '$' + (c/1000).toLocaleString() + 'k';
+const fee = (c, r) => Math.max(199, c * r);
+
+function render() {
+  const cap = +document.getElementById('sl').value;
+  document.getElementById('capDisplay').textContent = '$' + cap.toLocaleString();
+  const sf = fee(cap, 0.006), lf = fee(cap, 0.005), pr = cap * 0.07;
+  document.getElementById('rFee').textContent = fmt(sf) + '/mo';
+  document.getElementById('rAnn').textContent = fmt(sf*12) + ' / yr';
+  document.getElementById('rProfit').textContent = fmt(pr);
+  document.getElementById('rRatio').textContent = pct(sf/pr*100) + ' of profit';
+  document.getElementById('rLoyal').textContent = fmt(lf) + '/mo';
+  document.getElementById('rSave').textContent = sf > lf ? 'Save ' + fmt(sf-lf) + '/mo' : 'Same floor';
+  const cont = document.getElementById('rows');
+  cont.innerHTML = '';
+  data.forEach(({c}) => {
+    const f = fee(c, 0.006), floor = f===199, brk = c===33300;
+    const active = Math.abs(c - cap) < 13000;
+    const profit = c * 0.07;
+    const badge = brk ? '' : floor
+      ? '<span class="tag tag-f">floor</span>'
+      : '<span class="tag tag-r">0.6%</span>';
+    const div = document.createElement('div');
+    div.className = 'row' + (active?' on':floor?' dim':'');
+    div.innerHTML = `<div class="c1">${lbl(c)}${badge}</div><div class="c2">${fmt(f)}/mo</div><div class="c3">${fmt(profit)}</div>`;
+    cont.appendChild(div);
+  });
+}
+document.getElementById('sl').addEventListener('input', render);
+render();
+</script>
+</body>
+</html>
