@@ -3,255 +3,1031 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gridmatic Pricing</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Gridmatic · Pricing</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
   --lime: #C8FF00;
-  --lime-bg: rgba(200,255,0,0.07);
-  --lime-border: rgba(200,255,0,0.18);
-  --bg: #080808;
-  --panel: #111;
-  --border: rgba(255,255,255,0.07);
-  --muted: rgba(255,255,255,0.4);
-  --faint: rgba(255,255,255,0.15);
+  --lime-dim: rgba(200,255,0,0.08);
+  --lime-mid: rgba(200,255,0,0.15);
+  --lime-border: rgba(200,255,0,0.25);
+  --glass: rgba(255,255,255,0.06);
+  --glass-hi: rgba(255,255,255,0.1);
+  --glass-top: rgba(255,255,255,0.14);
+  --border: rgba(255,255,255,0.1);
+  --border-hi: rgba(255,255,255,0.18);
+  --muted: rgba(255,255,255,0.45);
+  --faint: rgba(255,255,255,0.2);
+  --bg: #070708;
 }
+
+html { background: var(--bg); }
+
 body {
-  background: var(--bg);
+  min-height: 100vh;
   color: #fff;
   font-family: 'DM Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
+  overflow-x: hidden;
+  padding: 48px 20px 80px;
   display: flex;
   justify-content: center;
-  padding: 60px 24px 80px;
+  position: relative;
 }
-.wrap { width: 100%; max-width: 600px; }
+
+/* Background */
+.bg {
+  position: fixed; inset: 0; z-index: 0;
+  background: radial-gradient(ellipse 70% 50% at 80% -10%, rgba(200,255,0,0.13) 0%, transparent 60%),
+              radial-gradient(ellipse 50% 40% at -10% 80%, rgba(200,255,0,0.07) 0%, transparent 60%),
+              radial-gradient(ellipse 40% 40% at 50% 40%, rgba(200,255,0,0.04) 0%, transparent 55%),
+              radial-gradient(ellipse 60% 60% at 50% 50%, rgba(20,22,32,0.85) 0%, var(--bg) 100%);
+}
+
+.wrap { width: 100%; max-width: 640px; position: relative; z-index: 1; }
+
+/* Glass card base */
+.gc {
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(48px) saturate(2) brightness(1.15);
+  -webkit-backdrop-filter: blur(48px) saturate(2) brightness(1.15);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 22px;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.18),
+    inset 0 -1px 0 rgba(0,0,0,0.25),
+    0 8px 40px rgba(0,0,0,0.45),
+    0 2px 8px rgba(0,0,0,0.25);
+}
+.gc-lime {
+  background: rgba(200,255,0,0.08);
+  backdrop-filter: blur(48px) saturate(2) brightness(1.1);
+  -webkit-backdrop-filter: blur(48px) saturate(2) brightness(1.1);
+  border: 1px solid rgba(200,255,0,0.28);
+  border-radius: 22px;
+  box-shadow:
+    inset 0 2px 0 rgba(200,255,0,0.22),
+    inset 0 -1px 0 rgba(0,0,0,0.2),
+    0 8px 40px rgba(0,0,0,0.4),
+    0 0 50px rgba(200,255,0,0.07);
+}
+.pill {
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border-radius: 100px;
+}
 
 /* Logo */
-.logo { font-size: 13px; font-weight: 500; color: var(--muted); letter-spacing: 0.01em; margin-bottom: 52px; }
-.logo b { color: #fff; }
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 40px;
+}
+.logo-mark {
+  width: 32px; height: 32px; border-radius: 9px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: var(--lime);
+  box-shadow: inset 0 1px 0 var(--glass-top);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.logo-text { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.5); }
+.logo-text b { color: #fff; }
+.logo-sep { width: 4px; height: 4px; border-radius: 50%; background: rgba(200,255,0,0.5); }
 
 /* Title */
-.title { font-size: 34px; font-weight: 300; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 12px; }
-.title b { font-weight: 600; color: var(--lime); }
-.subtitle { font-size: 14px; color: var(--muted); line-height: 1.65; max-width: 460px; margin-bottom: 36px; }
-
-/* Formula */
-.formula {
-  display: flex; align-items: center; gap: 12px;
-  border: 1px solid var(--lime-border);
-  border-radius: 8px;
-  padding: 12px 18px;
-  background: var(--panel);
-  margin-bottom: 36px;
-  width: fit-content;
+.hero { margin-bottom: 32px; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 12px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+   font-size: 10px;
+  color: var(--lime); letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 18px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: inset 0 1px 0 var(--glass-top);
 }
-.f-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
-.f-divider { width: 1px; height: 14px; background: var(--border); }
-.f-code { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--lime); font-weight: 500; }
+.eyebrow-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--lime); }
+.hero h1 {
+  font-size: clamp(30px, 5vw, 44px); font-weight: 300;
+  letter-spacing: -0.035em; line-height: 1.08; margin-bottom: 12px;
+}
+.hero h1 b { font-weight: 700; color: var(--lime); }
+.hero p { font-size: 14px; color: var(--muted); line-height: 1.65; max-width: 460px; }
 
-/* Slider */
-.slider-wrap { margin-bottom: 28px; }
-.slider-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
-.slider-top label { font-size: 13px; color: var(--muted); }
-.slider-top strong { font-family: 'DM Mono', monospace; font-size: 14px; color: #fff; font-weight: 500; }
+/* Formula toggle */
+.formula-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 16px; margin-bottom: 14px; cursor: pointer;
+  background: var(--glass); border: 1px solid var(--border);
+  border-radius: 100px; font-family: 'DM Sans', sans-serif;
+  font-size: 12px; color: var(--muted);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  box-shadow: inset 0 1px 0 var(--glass-top);
+  transition: color 0.15s, border-color 0.15s;
+}
+.formula-btn:hover { color: #fff; border-color: var(--border-hi); }
+.formula-btn .arr { color: var(--lime); font-size: 9px; transition: transform 0.2s; }
+.formula-btn.open .arr { transform: rotate(180deg); }
+.formula-box {
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.25s ease, margin 0.25s ease;
+  margin-bottom: 0;
+}
+.formula-box.open { max-height: 60px; opacity: 1; margin-bottom: 14px; }
+.formula-inner {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 10px 18px;
+  background: rgba(200,255,0,0.06);
+  border: 1px solid var(--lime-border);
+  border-radius: 12px;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  box-shadow: inset 0 1px 0 rgba(200,255,0,0.15);
+}
+.f-label {  font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.f-sep { width: 1px; height: 14px; background: var(--lime-border); }
+.f-code {  font-size: 13px; color: var(--lime); font-weight: 500; }
+
+/* Capital card */
+.cap-card { padding: 22px 24px 18px; margin-bottom: 14px; }
+.cap-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px; }
+.cap-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.cap-big { font-size: 38px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+.cap-big span { color: var(--lime); }
+.cap-input-row { position: relative; margin-bottom: 14px; }
+.cap-dollar { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 15px; color: var(--faint); pointer-events: none; }
+.cap-input {
+  width: 100%; padding: 11px 14px 11px 28px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 12px; color: #fff;
+  font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.cap-input::-webkit-outer-spin-button,
+.cap-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.cap-input:focus { border-color: var(--lime-border); box-shadow: 0 0 0 3px rgba(200,255,0,0.07); }
+.cap-input::placeholder { color: rgba(255,255,255,0.18); }
+.sl-row { display: flex; align-items: center; gap: 10px; }
+.sl-edge { font-size: 10px; color: rgba(255,255,255,0.2); }
 input[type=range] {
-  -webkit-appearance: none; width: 100%;
-  height: 2px; background: rgba(255,255,255,0.1);
-  border-radius: 2px; outline: none; cursor: pointer; display: block;
+  -webkit-appearance: none; flex: 1; height: 3px; border-radius: 2px; outline: none; cursor: pointer;
+  background: linear-gradient(to right, var(--lime) 0%, var(--lime) var(--pct,20%), rgba(255,255,255,0.1) var(--pct,20%), rgba(255,255,255,0.1) 100%);
 }
 input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 16px; height: 16px;
-  background: var(--lime); border-radius: 50%; cursor: pointer;
+  -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+  background: #fff; cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(200,255,0,0.3), 0 2px 6px rgba(0,0,0,0.4);
 }
+
+/* Return slider */
+.ret-card { padding: 14px 24px; margin-bottom: 14px; }
+.ret-row { display: flex; align-items: center; gap: 12px; }
+.ret-label { font-size: 13px; color: var(--muted); white-space: nowrap; min-width: 140px; }
+.ret-val { font-size: 14px; font-weight: 600; min-width: 48px; text-align: right; }
 
 /* Results */
-.results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 16px; margin-bottom: 32px; }
-.r-box { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
-.r-box.hi { border-color: var(--lime-border); background: var(--lime-bg); }
-.r-lbl { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
-.r-num { font-size: 19px; font-weight: 600; letter-spacing: -0.02em; }
+.results { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 14px; }
+.r-box { padding: 16px 18px; border-radius: 18px; }
+.r-box-std { background: var(--glass); border: 1px solid var(--border); box-shadow: inset 0 1px 0 var(--glass-top), 0 4px 16px rgba(0,0,0,0.25); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); }
+.r-box-hi { background: rgba(200,255,0,0.07); border: 1px solid var(--lime-border); box-shadow: inset 0 1px 0 rgba(200,255,0,0.15), 0 0 24px rgba(200,255,0,0.06); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); }
+.r-lbl { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 8px; }
+.r-num { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; color: #fff; margin-bottom: 3px; }
 .r-num.g { color: var(--lime); }
-.r-note { font-size: 10px; color: var(--faint); margin-top: 3px; font-family: 'DM Mono', monospace; }
+.r-note { font-size: 10px; color: rgba(255,255,255,0.25); }
 
 /* Table */
-.tbl-head { display: grid; grid-template-columns: 1.1fr 1fr 1fr; padding: 0 10px 9px; border-bottom: 1px solid var(--border); }
-.tbl-head span { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: rgba(255,255,255,0.22); }
-.tbl-head span:last-child { text-align: right; }
-.tbl-rows { margin-bottom: 32px; }
-.row {
-  display: grid; grid-template-columns: 1.1fr 1fr 1fr;
-  padding: 12px 10px; border-bottom: 1px solid var(--border);
-  border-radius: 6px; margin: 0 -10px;
+.tbl-wrap { margin-bottom: 14px; }
+.sec-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.45); margin-bottom: 12px; padding-left: 4px; }
+.tbl-card { overflow: hidden; }
+.tbl-head {
+  display: grid; grid-template-columns: 1.2fr 1fr 1fr;
+  padding: 12px 20px;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
-.row:hover { background: rgba(255,255,255,0.025); }
-.row.dim .c1, .row.dim .c2 { color: rgba(255,255,255,0.3); }
-.row.dim .c3 { color: rgba(200,255,0,0.25); }
-.row.on { background: var(--lime-bg); border-color: transparent; outline: 1px solid var(--lime-border); outline-offset: -1px; }
-.row.on .c1 { color: var(--lime); font-weight: 500; }
-.c1 { font-size: 14px; color: rgba(255,255,255,0.7); }
-.c2 { font-size: 14px; font-weight: 500; }
-.c3 { font-size: 14px; color: rgba(200,255,0,0.6); text-align: right; }
+.th { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.25); }
+.th:not(:first-child) { text-align: right; }
+.tbl-row {
+  display: grid; grid-template-columns: 1.2fr 1fr 1fr;
+  padding: 13px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.12s;
+}
+.tbl-row:last-child { border-bottom: none; }
+.tbl-row:hover { background: rgba(255,255,255,0.03); }
+.tbl-row.dim .tc1, .tbl-row.dim .tc2 { color: rgba(255,255,255,0.3); }
+.tbl-row.dim .tc3 { color: rgba(200,255,0,0.25); }
+.tbl-row.on { background: rgba(200,255,0,0.07); }
+.tbl-row.on .tc1 { color: var(--lime); font-weight: 600; }
+.tc1 { font-size: 14px; color: rgba(255,255,255,0.75); }
+.tc2 { font-size: 14px; font-weight: 600; text-align: right; }
+.tc3 { font-size: 14px; color: rgba(200,255,0,0.65); text-align: right; }
 .tag {
-  display: inline-block; font-family: 'DM Mono', monospace;
-  font-size: 9px; padding: 1px 5px; border-radius: 3px;
-  margin-left: 6px; vertical-align: middle;
+  display: inline-block; 
+  font-size: 9px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle;
 }
-.tag-f { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.28); }
-.tag-r { background: rgba(200,255,0,0.1); color: var(--lime); }
+.tf { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.3); }
+.tr { background: rgba(200,255,0,0.1); color: var(--lime); }
+.tbl-note { font-size: 10px; color: rgba(255,255,255,0.18); padding: 10px 4px 0; }
 
 /* Loyalty */
-.loyalty {
-  background: var(--panel); border: 1px solid var(--lime-border);
-  border-radius: 12px; padding: 22px 24px; margin-bottom: 32px;
+.loy-card { overflow: hidden; margin-bottom: 14px; }
+.loy-head {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
-.loy-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
-.loy-title { font-size: 15px; font-weight: 600; }
-.loy-tag { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--lime); background: rgba(200,255,0,0.1); padding: 4px 10px; border-radius: 20px; }
-.loy-body { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 22px; }
-.track { display: flex; align-items: center; }
-.step { text-align: center; }
-.dot {
-  width: 30px; height: 30px; border-radius: 50%;
+.loy-head-title { font-size: 14px; font-weight: 700; }
+.loy-head-pill {
+   font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--lime); background: rgba(200,255,0,0.1); border: 1px solid var(--lime-border);
+  padding: 4px 12px; border-radius: 100px;
+}
+.loy-panels { display: grid; grid-template-columns: 1fr 1px 1fr; }
+.loy-panel { padding: 20px 22px; }
+.loy-panel.b { background: rgba(200,255,0,0.04); }
+.loy-vsep { background: rgba(255,255,255,0.06); }
+.loy-period-label {  font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
+.loy-period-label.dim { color: rgba(255,255,255,0.25); }
+.loy-period-label.lit { color: rgba(200,255,0,0.45); }
+.loy-rate-num { font-size: 40px; font-weight: 700; letter-spacing: -0.05em; line-height: 1; margin-bottom: 4px; }
+.loy-rate-num.dim { color: rgba(255,255,255,0.45); }
+.loy-rate-num.lit { color: var(--lime); }
+.loy-per { font-size: 12px; margin-bottom: 10px; }
+.loy-per.dim { color: rgba(255,255,255,0.25); }
+.loy-per.lit { color: rgba(200,255,0,0.4); }
+.loy-desc { font-size: 12px; line-height: 1.55; }
+.loy-desc.dim { color: rgba(255,255,255,0.3); }
+.loy-desc.lit { color: rgba(200,255,0,0.45); }
+.loy-foot {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 14px 22px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  background: rgba(200,255,0,0.03);
+}
+.loy-foot-icon {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(200,255,0,0.12); border: 1px solid rgba(200,255,0,0.2);
   display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 6px; font-size: 11px; font-weight: 600;
+  font-size: 10px; color: var(--lime); margin-top: 1px;
 }
-.dot.a { background: var(--lime); color: #000; }
-.dot.b { background: rgba(200,255,0,0.1); border: 1px solid var(--lime-border); color: var(--lime); }
-.step-month { font-size: 10px; font-family: 'DM Mono', monospace; color: rgba(255,255,255,0.25); margin-bottom: 2px; }
-.step-rate { font-size: 13px; font-weight: 600; }
-.step-rate.g { color: var(--lime); }
-.line { flex: 1; height: 1px; background: var(--border); margin: 0 16px 22px; position: relative; }
-.line::after {
-  content: '12 months';
-  position: absolute; top: -7px; left: 50%; transform: translateX(-50%);
-  font-size: 9px; font-family: 'DM Mono', monospace; color: rgba(255,255,255,0.18);
-  background: var(--panel); padding: 0 6px; white-space: nowrap;
+.loy-foot-text { font-size: 12px; color: rgba(255,255,255,0.35); line-height: 1.55; }
+.loy-foot-text b { color: rgba(255,255,255,0.65); font-weight: 500; }
+
+/* Cash flow section */
+.cf-card { padding: 0; overflow: hidden; margin-bottom: 14px; }
+.cf-controls { padding: 20px 22px 18px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.cf-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.cf-row:last-child { margin-bottom: 0; }
+.cf-lbl { font-size: 13px; color: var(--muted); white-space: nowrap; min-width: 120px; }
+.cf-val {  font-size: 13px; font-weight: 500; min-width: 44px; text-align: right; }
+.cf-visual-split {
+  position: relative; height: 68px; border-radius: 14px; overflow: hidden;
+  display: flex; margin-bottom: 16px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.07);
 }
+.cf-vs-ri {
+  background: linear-gradient(135deg, rgba(50,110,50,0.6), rgba(25,70,25,0.5));
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  pointer-events: none; min-width: 0;
+}
+.cf-vs-cf {
+  background: rgba(25,28,35,0.7);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  pointer-events: none; flex: 1; min-width: 0;
+}
+.cf-vs-num { font-size: 22px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; margin-bottom: 3px; }
+.cf-vs-ri .cf-vs-num { color: var(--lime); }
+.cf-vs-cf .cf-vs-num { color: #fff; }
+.cf-vs-name { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+.cf-vs-ri .cf-vs-name { color: rgba(200,255,0,0.55); }
+.cf-vs-cf .cf-vs-name { color: rgba(255,255,255,0.4); }
+.cf-vs-desc { font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 3px; font-weight: 400; }
+.cf-lbl-cf { color: var(--lime); }
+.cf-lbl-ri { color: rgba(120,170,255,0.85); }
+.tf-custom-row { display: flex; align-items: center; gap: 10px; }
+.tf-custom-row label { font-size: 13px; color: var(--muted); white-space: nowrap; }
+.tf-input {
+  width: 70px; padding: 7px 10px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+  color: #fff;  font-size: 13px; font-weight: 500;
+  outline: none; text-align: center; -moz-appearance: textfield;
+  transition: border-color 0.15s;
+}
+.tf-input::-webkit-outer-spin-button, .tf-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.tf-input:focus { border-color: var(--lime-border); }
+.tf-presets { display: flex; gap: 5px; flex-wrap: wrap; }
+.tfp {
+  padding: 5px 11px; border-radius: 100px; cursor: pointer; font-size: 11px; font-weight: 500;
+  border: 1px solid var(--border); background: var(--glass); color: var(--muted);
+  font-family: 'DM Sans', sans-serif; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  transition: all 0.12s;
+}
+.tfp:hover { color: #fff; }
+.tfp.on { background: rgba(200,255,0,0.1); border-color: var(--lime-border); color: var(--lime); }
+.cf-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; padding: 16px 22px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.cfs-box { border-radius: 12px; padding: 14px 16px; }
+.cfs-cf { background: rgba(200,255,0,0.07); border: 1px solid rgba(200,255,0,0.18); box-shadow: inset 0 1px 0 rgba(200,255,0,0.1); }
+.cfs-ri { background: rgba(100,150,255,0.07); border: 1px solid rgba(100,150,255,0.2); box-shadow: inset 0 1px 0 rgba(100,150,255,0.08); }
+.cfs-cap { background: var(--glass); border: 1px solid var(--border); box-shadow: inset 0 1px 0 var(--glass-top); }
+.cfs-lbl { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 7px; }
+.cfs-lbl.g { color: rgba(200,255,0,0.7); }
+.cfs-lbl.b { color: rgba(120,170,255,0.7); }
+.cfs-lbl.w { color: rgba(255,255,255,0.6); }
+.cfs-num { font-size: 22px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 4px; }
+.cfs-num.g { color: var(--lime); }
+.cfs-num.b { color: rgba(170,205,255,1); }
+.cfs-num.w { color: #fff; }
+.cfs-sub { font-size: 12px; }
+.cfs-sub.g { color: rgba(200,255,0,0.5); }
+.cfs-sub.b { color: rgba(150,190,255,0.5); }
+.cfs-sub.w { color: rgba(255,255,255,0.4); }
+.cf-compare { display: grid; grid-template-columns: 1fr 1px 1fr; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.cfc-panel { padding: 18px 22px; }
+.cfc-vsep { background: rgba(255,255,255,0.05); }
+.cfc-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+.cfc-title.a { color: var(--lime); }
+.cfc-title.b { color: rgba(255,255,255,0.4); }
+.cfc-stat { margin-bottom: 10px; }
+.cfc-stat-lbl { font-size: 12px; color: rgba(255,255,255,0.45); margin-bottom: 3px; }
+.cfc-stat-val { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
+.cfc-stat-val.g { color: var(--lime); }
+.cfc-stat-val.w { color: rgba(255,255,255,0.65); }
+.cf-growth { padding: 18px 22px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.cf-growth-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); margin-bottom: 14px; }
+.growth-bar-wrap { margin-bottom: 8px; }
+.growth-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.growth-bar-lbl { font-size: 12px; color: rgba(255,255,255,0.55); min-width: 72px; }
+.growth-bar-track { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+.growth-bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
+.growth-bar-val { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.7); min-width: 85px; text-align: right; white-space: nowrap; }
+.cf-monthly-sec { padding: 18px 22px; }
+.cf-monthly-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+.cf-chart-wrap { position: relative; }
+.cf-chart-legend { display: flex; gap: 16px; margin-bottom: 14px; }
+.cf-chart-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.55); }
+.cf-chart-legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.cf-chart { display: flex; align-items: flex-end; gap: 4px; height: 120px; padding-bottom: 24px; position: relative; }
+.cf-chart-col { display: flex; align-items: flex-end; gap: 2px; flex: 1; height: 100%; position: relative; cursor: pointer; }
+.cf-chart-col:hover .cf-chart-tooltip { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(-4px); }
+.cf-bar-cf-col { width: 100%; border-radius: 3px 3px 0 0; background: var(--lime); transition: height 0.3s ease, opacity 0.15s; min-height: 2px; }
+.cf-bar-ri-col { width: 100%; border-radius: 3px 3px 0 0; background: rgba(110,155,255,0.65); transition: height 0.3s ease, opacity 0.15s; min-height: 2px; }
+.cf-chart-col:hover .cf-bar-cf-col,
+.cf-chart-col:hover .cf-bar-ri-col { opacity: 0.85; }
+.cf-col-label { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 9px; color: rgba(255,255,255,0.3); white-space: nowrap; }
+.cf-chart-tooltip {
+  position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%) translateY(0);
+  background: rgba(20,22,28,0.95); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px; padding: 8px 11px; white-space: nowrap;
+  opacity: 0; pointer-events: none; transition: opacity 0.15s, transform 0.15s;
+  z-index: 10; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+.cf-tt-title { font-size: 10px; color: rgba(255,255,255,0.4); margin-bottom: 5px; letter-spacing: 0.04em; }
+.cf-tt-row { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; font-size: 12px; font-weight: 600; }
+.cf-tt-row:last-child { margin-bottom: 0; }
+.cf-tt-dot { width: 7px; height: 7px; border-radius: 2px; flex-shrink: 0; }
+.cf-tt-cf { color: var(--lime); }
+.cf-tt-ri { color: rgba(150,190,255,0.9); }
+.cf-chart-gridlines { position: absolute; top: 0; left: 0; right: 0; bottom: 24px; pointer-events: none; }
+.cf-gridline { position: absolute; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.04); }
+
+/* Goal selector */
+.goal-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 20px; }
+.goal-card {
+  background: var(--glass); border: 1px solid var(--border);
+  border-radius: 16px; padding: 18px 16px; cursor: pointer;
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  box-shadow: inset 0 1px 0 var(--glass-top);
+  transition: border-color 0.15s, background 0.15s;
+  text-align: center;
+}
+.goal-card:hover { border-color: var(--border-hi); }
+.goal-card.active {
+  background: rgba(200,255,0,0.07);
+  border: 1.5px solid var(--lime-border);
+  box-shadow: inset 0 1px 0 rgba(200,255,0,0.12), 0 0 20px rgba(200,255,0,0.05);
+}
+.goal-icon { font-size: 22px; margin-bottom: 8px; color: var(--lime); font-weight: 700; }
+.goal-card:not(.active) .goal-icon { color: rgba(255,255,255,0.35); }
+.goal-title { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 6px; line-height: 1.3; }
+.goal-card:not(.active) .goal-title { color: rgba(255,255,255,0.65); }
+.goal-desc { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+.goal-card.active .goal-desc { color: rgba(200,255,0,0.55); }
+@media(max-width:480px) { .goal-grid { grid-template-columns: 1fr; } }
+
+/* Accordion steps */
+.step-block { margin-bottom: 10px; }
+.step-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; cursor: pointer;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(40px) saturate(1.8); -webkit-backdrop-filter: blur(40px) saturate(1.8);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 16px;
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.16), 0 4px 20px rgba(0,0,0,0.3);
+  transition: border-color 0.15s, background 0.15s;
+  user-select: none;
+}
+.step-header:hover { border-color: rgba(255,255,255,0.22); background: rgba(255,255,255,0.1); }
+.step-block.open .step-header {
+  border-radius: 16px 16px 0 0;
+  border-bottom-color: rgba(255,255,255,0.04);
+  background: rgba(200,255,0,0.08);
+  border-color: rgba(200,255,0,0.3);
+  box-shadow: inset 0 2px 0 rgba(200,255,0,0.18), 0 0 30px rgba(200,255,0,0.06);
+}
+.step-left { display: flex; align-items: center; gap: 14px; }
+.step-num {
+  width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  background: var(--lime); color: #060606;
+}
+.step-num.locked { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.3); }
+.step-num.done { background: rgba(200,255,0,0.15); color: var(--lime); }
+.step-info { display: flex; flex-direction: column; gap: 2px; }
+.step-title { font-size: 15px; font-weight: 600; color: #fff; }
+.step-block:not(.open) .step-title { color: rgba(255,255,255,0.55); }
+.step-summary { font-size: 12px; color: rgba(255,255,255,0.35); }
+.step-block.open .step-summary { color: rgba(200,255,0,0.5); }
+.step-arrow { font-size: 11px; color: rgba(255,255,255,0.3); transition: transform 0.25s; }
+.step-block.open .step-arrow { transform: rotate(180deg); color: var(--lime); }
+.step-body {
+  overflow: hidden; max-height: 2000px;
+  padding: 20px 0 4px;
+  transition: max-height 0.4s ease, padding 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+.step-body.closed { max-height: 0; padding: 0; opacity: 0; pointer-events: none; }
+.step-next-btn {
+  display: flex; align-items: center; justify-content: center;
+  padding: 12px 20px; margin-top: 14px; cursor: pointer;
+  background: var(--lime-dim); border: 1px solid var(--lime-border);
+  border-radius: 12px; font-size: 13px; font-weight: 600; color: var(--lime);
+  transition: background 0.15s;
+}
+.step-next-btn:hover { background: rgba(200,255,0,0.12); }
 
 /* Footer */
-.footer { border-top: 1px solid var(--border); padding-top: 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
-.footer-note { font-size: 11px; color: rgba(255,255,255,0.18); line-height: 1.6; }
-.footer-logo { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.12); }
-.footer-logo b { color: rgba(200,255,0,0.25); }
+.footer {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 10px; padding: 20px 22px;
+}
+.footer-note { font-size: 11px; color: rgba(255,255,255,0.18); line-height: 1.65; }
+.footer-logo { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.15); letter-spacing: -0.01em; }
+.footer-logo b { color: rgba(200,255,0,0.3); }
 
-@media(max-width:500px){
+@media(max-width:480px){
   .results { grid-template-columns: 1fr 1fr; }
   .results .r-box:last-child { grid-column: span 2; }
+  .hero h1 { font-size: 28px; }
+  .cap-big { font-size: 30px; }
 }
 </style>
 </head>
 <body>
+<div class="bg"></div>
 <div class="wrap">
 
-  <div class="logo"><b>Gridmatic</b> · Pricing</div>
-
-  <h1 class="title">Pay for what<br>you <b>deploy.</b></h1>
-  <p class="subtitle">One formula. No tiers, no cliffs. Your fee scales with your capital — and drops automatically after 12 months.</p>
-
-  <div class="formula">
-    <span class="f-label">Formula</span>
-    <div class="f-divider"></div>
-    <span class="f-code">max( $199, capital × 0.60% ) / mo</span>
+  <div class="logo">
+    <div class="logo-mark">G</div>
+    <div class="logo-sep"></div>
+    <div class="logo-text"><b>Gridmatic</b> · Your Plan</div>
   </div>
 
-  <div class="slider-wrap">
-    <div class="slider-top">
-      <label>Your capital</label>
-      <strong id="capDisplay">$75,000</strong>
-    </div>
-    <input type="range" id="sl" min="25000" max="300000" step="1000" value="75000">
+  <div class="hero">
+    <div class="hero-eyebrow"><div class="eyebrow-dot"></div>Let's figure out your goals</div>
+    <h1>What do you want<br><b>Gridmatic to do</b> for you?</h1>
+    <p>Answer two questions and we'll show you exactly what your bot can generate — and what it'll cost.</p>
   </div>
 
-  <div class="results">
-    <div class="r-box">
-      <div class="r-lbl">Monthly fee</div>
-      <div class="r-num" id="rFee">$450</div>
-      <div class="r-note" id="rAnn">$5,400 / yr</div>
-    </div>
-    <div class="r-box hi">
-      <div class="r-lbl">Est. monthly profit</div>
-      <div class="r-num g" id="rProfit">$5,250</div>
-      <div class="r-note" id="rRatio">8.6% of profit</div>
-    </div>
-    <div class="r-box">
-      <div class="r-lbl">After 12 months</div>
-      <div class="r-num g" id="rLoyal">$375</div>
-      <div class="r-note" id="rSave">Save $75/mo</div>
-    </div>
+  <div style="display:flex; align-items:center; gap:10px; padding:12px 18px; background:rgba(200,255,0,0.06); border:1px solid rgba(200,255,0,0.2); border-radius:12px; margin-bottom:28px; box-shadow: inset 0 1px 0 rgba(200,255,0,0.1);">
+    <div style="width:7px; height:7px; border-radius:50%; background:var(--lime); flex-shrink:0;"></div>
+    <p style="font-size:13px; color:rgba(255,255,255,0.7); line-height:1.5;"><b style="color:var(--lime); font-weight:600;">Inner Circle members:</b> your first 3 months are free. Pricing begins after your free period ends.</p>
   </div>
 
-  <div class="tbl-head">
-    <span>Capital</span><span>Monthly fee</span><span style="text-align:right">Est. profit (7%)</span>
-  </div>
-  <div class="tbl-rows" id="rows"></div>
-
-  <div class="loyalty">
-    <div class="loy-top">
-      <div class="loy-title">The 12-Month Rate</div>
-      <div class="loy-tag">Loyalty reward</div>
-    </div>
-    <div class="loy-body">Stay 12 months and your rate permanently drops from 0.6% to 0.5%. Your reward for letting the bot compound and grow.</div>
-    <div class="track">
-      <div class="step">
-        <div class="dot a">1</div>
-        <div class="step-month">Day one</div>
-        <div class="step-rate">0.6%/mo</div>
+  <!-- STEP 1: Goal -->
+  <div class="step-block" id="step1">
+    <div class="step-header" onclick="toggleStep(1)">
+      <div class="step-left">
+        <div class="step-num" id="snum1">1</div>
+        <div class="step-info">
+          <div class="step-title">What's your goal?</div>
+          <div class="step-summary" id="ssum1">Choose what you want Gridmatic to do</div>
+        </div>
       </div>
-      <div class="line"></div>
-      <div class="step">
-        <div class="dot b">✓</div>
-        <div class="step-month">Month 12+</div>
-        <div class="step-rate g">0.5%/mo</div>
+      <div class="step-arrow" id="sarr1">▼</div>
+    </div>
+    <div class="step-body" id="sbody1">
+      <div class="goal-grid" id="goalGrid">
+        <div class="goal-card active" id="goal-grow" onclick="setGoal('grow')">
+          <div class="goal-icon">↑</div>
+          <div class="goal-title">Grow my account</div>
+          <div class="goal-desc">Reinvest profits. Let capital compound.</div>
+        </div>
+        <div class="goal-card" id="goal-income" onclick="setGoal('income')">
+          <div class="goal-icon">$</div>
+          <div class="goal-title">Monthly income</div>
+          <div class="goal-desc">Withdraw profits as cash every month.</div>
+        </div>
+        <div class="goal-card" id="goal-both" onclick="setGoal('both')">
+          <div class="goal-icon">⇄</div>
+          <div class="goal-title">Both — split it</div>
+          <div class="goal-desc">Take income now and still grow.</div>
+        </div>
+      </div>
+      <div class="step-next-btn" onclick="goToStep(2)">Next: Your capital →</div>
+    </div>
+  </div>
+
+  <!-- STEP 2: Capital -->
+  <div class="step-block" id="step2">
+    <div class="step-header" onclick="toggleStep(2)">
+      <div class="step-left">
+        <div class="step-num locked" id="snum2">2</div>
+        <div class="step-info">
+          <div class="step-title">How much can you invest?</div>
+          <div class="step-summary" id="ssum2">Set your capital and expected return</div>
+        </div>
+      </div>
+      <div class="step-arrow" id="sarr2">▼</div>
+    </div>
+    <div class="step-body closed" id="sbody2">
+      <div class="gc cap-card">
+        <div class="cap-top">
+          <span class="cap-label">Your capital</span>
+          <div class="cap-big">$<span id="capAmt">75,000</span></div>
+        </div>
+        <div class="cap-input-row">
+          <span class="cap-dollar">$</span>
+          <input class="cap-input" type="text" id="capIn" value="75,000" placeholder="e.g. 75,000">
+        </div>
+        <div class="sl-row">
+          <span class="sl-edge">$1k</span>
+          <input type="range" id="sl" min="1000" max="2000000" step="500" value="75000">
+          <span class="sl-edge">$2M+</span>
+        </div>
+      </div>
+      <div class="gc ret-card">
+        <div class="ret-row">
+          <span class="ret-label">Est. monthly return</span>
+          <input type="range" id="retSl" min="1" max="30" step="0.5" value="7" style="--pct:20%;">
+          <span class="ret-val" id="retVal">7.0%</span>
+        </div>
+      </div>
+      <div class="step-next-btn" onclick="goToStep(3)">Next: See your outcome →</div>
+    </div>
+  </div>
+
+  <!-- STEP 3: Projections -->
+  <div class="step-block" id="step3">
+    <div class="step-header" onclick="toggleStep(3)">
+      <div class="step-left">
+        <div class="step-num locked" id="snum3">3</div>
+        <div class="step-info">
+          <div class="step-title">See your outcome</div>
+          <div class="step-summary" id="ssum3">Projections based on your capital and goal</div>
+        </div>
+      </div>
+      <div class="step-arrow" id="sarr3">▼</div>
+    </div>
+    <div class="step-body closed" id="sbody3">
+      <div class="results" style="grid-template-columns: 1fr 1fr 1fr; margin-bottom:14px;">
+        <div class="r-box r-box-hi">
+          <div class="r-lbl">Est. monthly profit</div>
+          <div class="r-num g" id="rProfit">$5,250</div>
+          <div class="r-note" id="rRatio">at 7% return</div>
+        </div>
+        <div class="r-box r-box-std">
+          <div class="r-lbl">After fee · you keep</div>
+          <div class="r-num g" id="rNet">$4,800</div>
+          <div class="r-note">per month</div>
+        </div>
+        <div class="r-box r-box-std">
+          <div class="r-lbl">Monthly fee</div>
+          <div class="r-num" id="rFee">$450</div>
+          <div class="r-note" id="rAnn">$5,400 / yr</div>
+        </div>
+      </div>
+      <div class="sec-label">Cash flow vs reinvestment</div>
+      <div class="gc cf-card">
+        <div class="cf-controls">
+          <div class="cf-row" style="margin-bottom: 10px;">
+            <span class="cf-lbl">Split</span>
+          </div>
+          <div class="cf-visual-split">
+            <div class="cf-vs-ri" id="cfVsRi">
+              <div class="cf-vs-num" id="riPctLbl">50%</div>
+              <div class="cf-vs-name">Reinvest</div>
+              <div class="cf-vs-desc">Grows your account</div>
+            </div>
+            <div class="cf-vs-cf" id="cfVsCf">
+              <div class="cf-vs-num" id="cfPctLbl">50%</div>
+              <div class="cf-vs-name">Cashflow</div>
+              <div class="cf-vs-desc">Withdraw anytime</div>
+            </div>
+          </div>
+          <div class="sl-row" style="margin-bottom: 16px;">
+            <span class="sl-edge">0%</span>
+            <input type="range" id="cfSl" min="0" max="100" step="5" value="50" style="--pct:50%;">
+            <span class="sl-edge">100%</span>
+          </div>
+          <div class="tf-custom-row">
+            <label>Timeframe</label>
+            <input class="tf-input" type="number" id="tfIn" min="1" max="120" value="12">
+            <span style="font-size:13px;color:var(--muted);">months</span>
+            <div class="tf-presets">
+              <button class="tfp" onclick="setTF(3)">3mo</button>
+              <button class="tfp" onclick="setTF(6)">6mo</button>
+              <button class="tfp on" onclick="setTF(12)">1yr</button>
+              <button class="tfp" onclick="setTF(24)">2yr</button>
+              <button class="tfp" onclick="setTF(36)">3yr</button>
+            </div>
+          </div>
+        </div>
+        <div class="cf-summary">
+          <div style="grid-column:span 3; display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:10px; margin-bottom:2px;">
+            <span style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:rgba(255,255,255,0.4);">Starting capital</span>
+            <span style="font-size:18px; font-weight:700; color:rgba(255,255,255,0.7);" id="cfStartCap">$75,000</span>
+          </div>
+          <div class="cfs-box cfs-cf">
+            <div class="cfs-lbl g">Total cash flow</div>
+            <div class="cfs-num g" id="cfTotal">—</div>
+            <div class="cfs-sub g" id="cfAvg">—</div>
+            <div style="font-size:10px;color:rgba(200,255,0,0.35);margin-top:4px;">Money sent to your wallet</div>
+          </div>
+          <div class="cfs-box cfs-ri">
+            <div class="cfs-lbl b">Total reinvested</div>
+            <div class="cfs-num b" id="riTotal">—</div>
+            <div class="cfs-sub b" id="riAvg">—</div>
+            <div style="font-size:10px;color:rgba(120,170,255,0.4);margin-top:4px;">Added back to grow your bot</div>
+          </div>
+          <div class="cfs-box cfs-cap">
+            <div class="cfs-lbl w">Final capital</div>
+            <div class="cfs-num w" id="capFinal">—</div>
+            <div class="cfs-sub w" id="capGrowth">—</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.2);margin-top:4px;">Your bot's total trading balance</div>
+          </div>
+        </div>
+        <div class="cf-growth">
+          <div class="cf-growth-title">Capital growth over time</div>
+          <div id="growthBars"></div>
+        </div>
+        <div class="cf-monthly-sec">
+          <div class="cf-monthly-title" id="moTitle">Month by month</div>
+          <div class="cf-chart-legend">
+            <div class="cf-chart-legend-item"><div class="cf-chart-legend-dot" style="background:var(--lime)"></div>Cash flow</div>
+            <div class="cf-chart-legend-item"><div class="cf-chart-legend-dot" style="background:rgba(110,155,255,0.65)"></div>Reinvested</div>
+          </div>
+          <div class="cf-chart-wrap">
+            <div class="cf-chart-gridlines" id="cfGridlines"></div>
+            <div class="cf-chart" id="cfChart"></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-next-btn" onclick="goToStep(4)">Next: See what it costs →</div>
+    </div>
+  </div>
+
+  <!-- STEP 4: Pricing -->
+  <div class="step-block" id="step4">
+    <div class="step-header" onclick="toggleStep(4)">
+      <div class="step-left">
+        <div class="step-num locked" id="snum4">4</div>
+        <div class="step-info">
+          <div class="step-title">What it costs</div>
+          <div class="step-summary" id="ssum4">Your subscription based on capital</div>
+        </div>
+      </div>
+      <div class="step-arrow" id="sarr4">▼</div>
+    </div>
+    <div class="step-body closed" id="sbody4">
+      <button class="formula-btn pill" id="fBtn" onclick="toggleFormula()">
+        <span id="fBtnTxt">How is pricing calculated?</span>
+        <span class="arr">▼</span>
+      </button>
+      <div class="formula-box" id="fBox">
+        <div class="formula-inner">
+          <span class="f-label">Formula</span>
+          <div class="f-sep"></div>
+          <span class="f-code">max( $199, capital × 0.60% ) / month</span>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <div class="gc tbl-card">
+          <div class="tbl-head">
+            <div class="th">Capital</div>
+            <div class="th">Subscription</div>
+            <div class="th" id="profitHdr">Est. Profit (7%)</div>
+          </div>
+          <div id="rows"></div>
+        </div>
+        <div class="tbl-note">$199/mo minimum applies below ~$33k · 0.6% of capital above $33k</div>
+      </div>
+      <div class="sec-label" style="margin-top:6px;">Loyalty reward</div>
+      <div class="gc-lime loy-card">
+        <div class="loy-head">
+          <div class="loy-head-title">The 12-Month Rate</div>
+          <div class="loy-head-pill">Loyalty reward</div>
+        </div>
+        <div class="loy-panels">
+          <div class="loy-panel">
+            <div class="loy-period-label dim">Months 1 – 12</div>
+            <div class="loy-rate-num dim">0.6%</div>
+            <div class="loy-per dim">per month</div>
+            <div class="loy-desc dim">Standard rate from day one. 0.6% of your deployed capital monthly.</div>
+          </div>
+          <div class="loy-vsep"></div>
+          <div class="loy-panel b">
+            <div class="loy-period-label lit">Month 13 onwards</div>
+            <div class="loy-rate-num lit">0.5%</div>
+            <div class="loy-per lit">per month · forever</div>
+            <div class="loy-desc lit">Your rate drops permanently. The longer you stay, the more you keep.</div>
+          </div>
+        </div>
+        <div class="loy-foot">
+          <div class="loy-foot-icon">→</div>
+          <div class="loy-foot-text">After 12 months your rate <b>permanently drops from 0.6% to 0.5%</b> — automatic, no action needed.</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="footer">
-    <div class="footer-note">$199 minimum floor · $25,000 minimum capital<br>No performance fees · No setup fees · Cancel anytime</div>
-    <div class="footer-logo">Grid<b>matic</b></div>
-  </div>
 
 </div>
 <script>
-const data = [
-  {c:25000},{c:33300},{c:50000},{c:75000},
-  {c:100000},{c:150000},{c:200000},{c:300000}
-];
+let currentStep = 1;
+
+function toggleStep(n) {
+  const block = document.getElementById('step' + n);
+  const isOpen = block.classList.contains('open');
+  if (isOpen) {
+    block.classList.remove('open');
+    document.getElementById('sbody' + n).classList.add('closed');
+  } else {
+    openStep(n);
+  }
+}
+
+function openStep(n) {
+  for (let i = 1; i <= 4; i++) {
+    const b = document.getElementById('step' + i);
+    const body = document.getElementById('sbody' + i);
+    b.classList.remove('open');
+    body.classList.add('closed');
+  }
+  const block = document.getElementById('step' + n);
+  block.classList.add('open');
+  document.getElementById('sbody' + n).classList.remove('closed');
+  if (n > 1) {
+    document.getElementById('snum' + n).classList.remove('locked');
+    document.getElementById('snum' + n).classList.remove('done');
+  }
+  currentStep = n;
+  if (n === 3) { render(parseCapital(document.getElementById('capIn').value)); renderCF(); }
+}
+
+function goToStep(n) {
+  const prev = n - 1;
+  const num = document.getElementById('snum' + prev);
+  if (num) { num.classList.remove('locked'); num.classList.add('done'); num.textContent = '✓'; }
+  openStep(n);
+  setTimeout(() => { document.getElementById('step' + n).scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
+}
+
+function setGoal(goal) {
+  document.querySelectorAll('.goal-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('goal-' + goal).classList.add('active');
+  const splits = { grow: 0, income: 100, both: 50 };
+  cfPct = splits[goal] / 100;
+  const sl = document.getElementById('cfSl');
+  if (sl) { sl.value = splits[goal]; setSliderPct('cfSl', splits[goal], 0, 100); }
+  renderCF();
+}
+
+const fee = c => Math.max(199, c * 0.006);
 const fmt = n => '$' + Math.round(n).toLocaleString();
 const pct = n => n.toFixed(1) + '%';
 const lbl = c => c === 33300 ? '~$33k' : '$' + (c/1000).toLocaleString() + 'k';
-const fee = (c, r) => Math.max(199, c * r);
 
-function render() {
-  const cap = +document.getElementById('sl').value;
-  document.getElementById('capDisplay').textContent = '$' + cap.toLocaleString();
-  const sf = fee(cap, 0.006), lf = fee(cap, 0.005), pr = cap * 0.07;
-  document.getElementById('rFee').textContent = fmt(sf) + '/mo';
-  document.getElementById('rAnn').textContent = fmt(sf*12) + ' / yr';
+const rows = [{c:25000},{c:33300},{c:50000},{c:75000},{c:100000},{c:150000},{c:200000},{c:300000}];
+let retRate = 0.07;
+
+function setSliderPct(id, val, min, max) {
+  const p = ((val-min)/(max-min)*100).toFixed(1);
+  document.getElementById(id).style.setProperty('--pct', p+'%');
+}
+
+function render(cap) {
+  cap = Math.max(1000, cap);
+  document.getElementById('capAmt').textContent = cap.toLocaleString();
+  const sf = fee(cap), lf = Math.max(199, cap*0.005);
+  const pr = cap * retRate;
+  document.getElementById('rFee').textContent = fmt(sf)+'/mo';
+  document.getElementById('rAnn').textContent = fmt(sf*12)+' / yr';
   document.getElementById('rProfit').textContent = fmt(pr);
-  document.getElementById('rRatio').textContent = pct(sf/pr*100) + ' of profit';
-  document.getElementById('rLoyal').textContent = fmt(lf) + '/mo';
-  document.getElementById('rSave').textContent = sf > lf ? 'Save ' + fmt(sf-lf) + '/mo' : 'Same floor';
+  document.getElementById('rRatio').textContent = pct(sf/pr*100)+' of profit';
+  document.getElementById('rNet').textContent = fmt(pr - sf)+'/mo';
+  document.getElementById('profitHdr').textContent = 'Est. Profit ('+pct(retRate*100)+')';
   const cont = document.getElementById('rows');
   cont.innerHTML = '';
-  data.forEach(({c}) => {
-    const f = fee(c, 0.006), floor = f===199, brk = c===33300;
-    const active = Math.abs(c - cap) < 13000;
-    const profit = c * 0.07;
-    const badge = brk ? '' : floor
-      ? '<span class="tag tag-f">floor</span>'
-      : '<span class="tag tag-r">0.6%</span>';
+  rows.forEach(({c}) => {
+    const f = fee(c), isFloor = f===199, isBreak = c===33300;
+    const active = Math.abs(c-cap) < 14000;
+    const profit = c * retRate;
+    const badge = isBreak ? '<span class="tag tf">breakeven</span>' :
+      isFloor ? '<span class="tag tf">floor</span>' : '<span class="tag tr">0.6%</span>';
     const div = document.createElement('div');
-    div.className = 'row' + (active?' on':floor?' dim':'');
-    div.innerHTML = `<div class="c1">${lbl(c)}${badge}</div><div class="c2">${fmt(f)}/mo</div><div class="c3">${fmt(profit)}</div>`;
+    div.className = 'tbl-row' + (active?' on':isFloor?' dim':'');
+    div.innerHTML = `<div class="tc1">${lbl(c)}${badge}</div><div class="tc2">${fmt(f)}/mo</div><div class="tc3">${fmt(profit)}</div>`;
     cont.appendChild(div);
   });
+  setSliderPct('sl', cap, 1000, 2000000);
 }
-document.getElementById('sl').addEventListener('input', render);
-render();
+
+function toggleFormula() {
+  const box = document.getElementById('fBox'), btn = document.getElementById('fBtn');
+  const open = box.classList.toggle('open');
+  btn.classList.toggle('open', open);
+  document.getElementById('fBtnTxt').textContent = open ? 'Hide formula' : 'How is this calculated?';
+}
+
+const sl = document.getElementById('sl');
+const ci = document.getElementById('capIn');
+const rs = document.getElementById('retSl');
+
+function parseCapital(val) {
+  return Math.max(1000, parseInt(String(val).replace(/,/g, "")) || 1000);
+}
+
+sl.addEventListener('input', () => {
+  const v = +sl.value;
+  ci.value = v.toLocaleString();
+  render(v); renderCF();
+});
+ci.addEventListener('input', () => {
+  const v = parseCapital(ci.value);
+  sl.value = Math.min(2000000, v);
+  render(v); renderCF();
+});
+ci.addEventListener('blur', () => {
+  const v = parseCapital(ci.value);
+  ci.value = v.toLocaleString();
+  sl.value = Math.min(2000000, v);
+  render(v); renderCF();
+});
+rs.addEventListener('input', () => {
+  retRate = +rs.value/100;
+  document.getElementById('retVal').textContent = (+rs.value).toFixed(1)+'%';
+  setSliderPct('retSl', +rs.value, 1, 30);
+  render(parseCapital(ci.value));
+  renderCF();
+});
+
+let cfPct = 0.5;
+let tfMonths = 12;
+
+function setTF(m) {
+  tfMonths = m;
+  document.getElementById('tfIn').value = m;
+  document.querySelectorAll('.tfp').forEach(b => b.classList.toggle('on', +b.dataset.m === m));
+  renderCF();
+}
+
+function simulate(cap, ret, cfP, months) {
+  let capital = cap, totalCF = 0, totalRI = 0;
+  const data = [];
+  for (let i = 1; i <= months; i++) {
+    const profit = capital * ret;
+    const cf = profit * cfP;
+    const ri = profit * (1 - cfP);
+    totalCF += cf; totalRI += ri; capital += ri;
+    data.push({ m: i, cf, ri, capital, profit });
+  }
+  return { totalCF, totalRI, finalCap: capital, data };
+}
+
+function renderCF() {
+  const cap = Math.max(1000, parseInt(String(document.getElementById('capIn').value).replace(/,/g,'')) || 75000);
+  const cfD = Math.round(cfPct * 100);
+  const riD = 100 - cfD;
+
+  document.getElementById('cfVal') && (document.getElementById('cfVal').textContent = cfD + '%');
+  const riEl = document.getElementById('cfVsRi');
+  const cfEl = document.getElementById('cfVsCf');
+  if (riEl) riEl.style.width = riD + '%';
+  document.getElementById('riPctLbl') && (document.getElementById('riPctLbl').textContent = riD + '%');
+  document.getElementById('cfPctLbl') && (document.getElementById('cfPctLbl').textContent = cfD + '%');
+  setSliderPct('cfSl', cfD, 0, 100);
+
+  const A = simulate(cap, retRate, cfPct, tfMonths);
+
+  document.getElementById('cfStartCap').textContent = fmt(cap);
+  document.getElementById('cfTotal').textContent = fmt(A.totalCF);
+  document.getElementById('cfAvg').textContent = fmt(A.totalCF / tfMonths) + ' avg/mo';
+  document.getElementById('riTotal').textContent = fmt(A.totalRI);
+  document.getElementById('riAvg').textContent = fmt(A.totalRI / tfMonths) + ' avg/mo';
+  document.getElementById('capFinal').textContent = fmt(A.finalCap);
+  document.getElementById('capGrowth').textContent = '+' + fmt(A.finalCap - cap) + ' growth';
+
+  const growthCont = document.getElementById('growthBars');
+  growthCont.innerHTML = '';
+  const maxCap = A.finalCap;
+  const startRow = document.createElement('div');
+  startRow.className = 'growth-bar-row';
+  startRow.innerHTML = `
+    <span class="growth-bar-lbl" style="color:rgba(255,255,255,0.35);">Start</span>
+    <div class="growth-bar-track"><div class="growth-bar-fill" style="width:${Math.round(cap/maxCap*100)}%;background:rgba(255,255,255,0.15);"></div></div>
+    <span class="growth-bar-val" style="color:rgba(255,255,255,0.35);">${fmt(cap)} <span style="font-size:10px;color:rgba(255,255,255,0.22);">initial</span></span>
+  `;
+  growthCont.appendChild(startRow);
+  const milestones = tfMonths <= 12
+    ? A.data.filter((_,i) => i===0||(i+1)%Math.ceil(tfMonths/6)===0||i===tfMonths-1)
+    : A.data.filter((_,i) => i===0||(i+1)%Math.ceil(tfMonths/5)===0||i===tfMonths-1);
+  const seen = new Set();
+  milestones.forEach(({m, capital}) => {
+    if (seen.has(m)) return; seen.add(m);
+    const w = Math.round(capital/maxCap*100);
+    const isLast = m===tfMonths;
+    const row = document.createElement('div');
+    row.className = 'growth-bar-row';
+    row.innerHTML = `
+      <span class="growth-bar-lbl" style="${isLast?'color:#fff;font-weight:600;':''}">Month ${m}${isLast?' · final':''}</span>
+      <div class="growth-bar-track"><div class="growth-bar-fill" style="width:${w}%;background:linear-gradient(to right,rgba(200,255,0,0.6),var(--lime))"></div></div>
+      <span class="growth-bar-val" style="${isLast?'color:var(--lime);':''}">${fmt(capital)}${isLast?` <span style="font-size:10px;color:rgba(200,255,0,0.5);">+${fmt(capital-cap)}</span>`:''}</span>
+    `;
+    growthCont.appendChild(row);
+  });
+
+  document.getElementById('moTitle').textContent = 'Month by month · ' + tfMonths + ' months';
+  const chart = document.getElementById('cfChart');
+  chart.innerHTML = '';
+  const gridlines = document.getElementById('cfGridlines');
+  gridlines.innerHTML = '';
+
+  const maxCols = 16;
+  const step = Math.ceil(A.data.length / maxCols);
+  const chartData = A.data.filter((_, i) => i % step === 0 || i === A.data.length - 1);
+  const maxVal = Math.max(...chartData.map(d => d.cf + d.ri));
+  [75, 50, 25].forEach(pct => {
+    const line = document.createElement('div');
+    line.className = 'cf-gridline';
+    line.style.bottom = pct + '%';
+    gridlines.appendChild(line);
+  });
+
+  chartData.forEach(({m, cf, ri}) => {
+    const cfH = Math.round(cf / maxVal * 96);
+    const riH = Math.round(ri / maxVal * 96);
+    const col = document.createElement('div');
+    col.className = 'cf-chart-col';
+    col.innerHTML = `
+      <div style="display:flex;align-items:flex-end;gap:2px;width:100%;height:100%;">
+        <div class="cf-bar-cf-col" style="height:${cfH}%"></div>
+        <div class="cf-bar-ri-col" style="height:${riH}%"></div>
+      </div>
+      <span class="cf-col-label">M${m}</span>
+      <div class="cf-chart-tooltip">
+        <div class="cf-tt-title">Month ${m}</div>
+        <div class="cf-tt-row"><div class="cf-tt-dot" style="background:var(--lime)"></div><span class="cf-tt-cf">${fmt(cf)}</span></div>
+        <div class="cf-tt-row"><div class="cf-tt-dot" style="background:rgba(110,155,255,0.65)"></div><span class="cf-tt-ri">${fmt(ri)}</span></div>
+      </div>
+    `;
+    chart.appendChild(col);
+  });
+}
+
+document.getElementById('cfSl').addEventListener('input', function() {
+  cfPct = +this.value / 100;
+  renderCF();
+});
+
+document.getElementById('tfIn').addEventListener('input', function() {
+  const v = Math.max(1, Math.min(120, parseInt(this.value) || 12));
+  tfMonths = v;
+  document.querySelectorAll('.tfp').forEach(b => b.classList.toggle('on', +b.dataset.m === v));
+  renderCF();
+});
+
+document.querySelectorAll('.tfp').forEach(b => {
+  const map = { '3mo': 3, '6mo': 6, '1yr': 12, '2yr': 24, '3yr': 36 };
+  b.dataset.m = map[b.textContent.trim()] || 12;
+  b.onclick = () => setTF(+b.dataset.m);
+});
+
+render(75000);
+renderCF();
+openStep(1);
 </script>
 </body>
 </html>
